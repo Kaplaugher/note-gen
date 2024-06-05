@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Note Gen",
+  title: "NoteCast",
   description: "Turn your notes into a NoteCast",
   icons: {
     icon: "/icons/logo.svg",

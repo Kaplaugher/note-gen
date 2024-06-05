@@ -11,7 +11,7 @@ export const sidebarLinks = [
   },
   {
     imgURL: "/icons/microphone.svg",
-    route: "/create-NoteCast",
+    route: "/create-notecast",
     label: "Create NoteCast",
   },
 ];
@@ -43,7 +43,7 @@ export const voiceDetails = [
   },
 ];
 
-export const NoteCastData = [
+export const noteCastData = [
   {
     id: 1,
     title: "The Joe Rogan Experience",
