@@ -27,6 +27,10 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
+import { Loader } from "lucide-react";
+import GenerateNotecast from "@/components/GenerateNotecast";
+import GenerateThumbnail from "@/components/GenerateThumbnail";
+import { Id } from "@/convex/_generated/dataModel";
 
 const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
 
@@ -57,7 +61,8 @@ const CreateNotecast = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      notecastTitle: "",
+      notecastDescription: "",
     },
   });
 
@@ -149,7 +154,42 @@ const CreateNotecast = () => {
               )}
             />
           </div>
-          <Button type="submit">Submit</Button>
+
+          <div className="flex flex-col pt-10">
+            <GenerateNotecast
+              setAudioStorageId={setAudioStorageId}
+              setAudio={setAudioUrl}
+              voiceType={voiceType!}
+              audio={audioUrl}
+              voicePrompt={voicePrompt}
+              setVoicePrompt={setVoicePrompt}
+              setAudioDuration={setAudioDuration}
+            />
+
+            <GenerateThumbnail
+              setImage={setImageUrl}
+              setImageStorageId={setImageStorageId}
+              image={imageUrl}
+              imagePrompt={imagePrompt}
+              setImagePrompt={setImagePrompt}
+            />
+
+            <div className="mt-10 w-full">
+              <Button
+                type="submit"
+                className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1"
+              >
+                {isSubmitting ? (
+                  <>
+                    Submitting
+                    <Loader size={20} className="animate-spin ml-2" />
+                  </>
+                ) : (
+                  "Submit & Publish Podcast"
+                )}
+              </Button>
+            </div>
+          </div>
         </form>
       </Form>
     </section>
