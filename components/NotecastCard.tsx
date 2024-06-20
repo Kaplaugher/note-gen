@@ -1,22 +1,25 @@
+import { NotecastCardProps } from "@/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const NotecastCard = ({
-  id,
   title,
   description,
-  imgURL,
-}: {
-  id: number;
-  title: string;
-  description: string;
-  imgURL: string;
-}) => {
+  imgUrl,
+  notecastId,
+}: NotecastCardProps) => {
+  const router = useRouter();
+  const handleViews = () => {
+    router.push(`/notecasts/${notecastId}`, {
+      scroll: true,
+    });
+  };
   return (
-    <div className="cursor-pointer">
+    <div className="cursor-pointer" onClick={handleViews}>
       <figure className="flex flex-col gap-2">
         <Image
-          src={imgURL}
+          src={imgUrl}
           width={174}
           height={174}
           alt={title}

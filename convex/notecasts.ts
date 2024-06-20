@@ -101,7 +101,7 @@ export const getnotecastById = query({
 });
 
 // this query will get the notecasts based on the views of the notecast , which we are showing in the Trending notecasts section.
-export const getTrendingnotecasts = query({
+export const getTrendingNotecasts = query({
   handler: async (ctx) => {
     const notecast = await ctx.db.query("notecasts").collect();
 

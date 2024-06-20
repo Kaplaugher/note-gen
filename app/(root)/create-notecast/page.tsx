@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,9 @@ import { Loader } from "lucide-react";
 import GenerateNotecast from "@/components/GenerateNotecast";
 import GenerateThumbnail from "@/components/GenerateThumbnail";
 import { Id } from "@/convex/_generated/dataModel";
+import { useToast } from "@/components/ui/use-toast";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
 
@@ -57,6 +60,8 @@ const CreateNotecast = () => {
   const [voicePrompt, setVoicePrompt] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const submitNotecast = useMutation(api.notecasts.createNotecast);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,9 +72,42 @@ const CreateNotecast = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsSubmitting(true);
+      if (!audioUrl || !imageUrl || !voiceType) {
+        toast({
+          title: "Error",
+          description: "Please fill all the fields",
+          duration: 5000,
+        });
+        setIsSubmitting(false);
+        throw new Error("Please fill all the fields");
+      }
+      const notecast = await submitNotecast({
+        notecastTitle: values.notecastTitle,
+        notecastDescription: values.notecastDescription,
+        audioUrl,
+        imageUrl,
+        voiceType,
+        imagePrompt,
+        voicePrompt,
+        views: 0,
+        audioDuration,
+        audioStorageId: audioStorageId!,
+        imageStorageId: imageStorageId!,
+      });
+      toast({ title: "Notecast created" });
+      setIsSubmitting(false);
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+    }
     console.log(values);
   }
 
@@ -166,13 +204,13 @@ const CreateNotecast = () => {
               setAudioDuration={setAudioDuration}
             />
 
-            {/* <GenerateThumbnail
+            <GenerateThumbnail
               setImage={setImageUrl}
               setImageStorageId={setImageStorageId}
               image={imageUrl}
               imagePrompt={imagePrompt}
               setImagePrompt={setImagePrompt}
-            /> */}
+            />
 
             <div className="mt-10 w-full">
               <Button
@@ -185,7 +223,7 @@ const CreateNotecast = () => {
                     <Loader size={20} className="animate-spin ml-2" />
                   </>
                 ) : (
-                  "Submit & Publish Podcast"
+                  "Submit & Publish notecast"
                 )}
               </Button>
             </div>

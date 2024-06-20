@@ -105,7 +105,7 @@ export interface AudioContextType {
   setAudio: React.Dispatch<React.SetStateAction<AudioProps | undefined>>;
 }
 
-export interface PodcastCardProps {
+export interface NotecastCardProps {
   imgUrl: string;
   title: string;
   description: string;
