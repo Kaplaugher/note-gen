@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "youthful-mosquito-615.convex.cloud",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      },
     ],
   },
 };

@@ -91,7 +91,7 @@ export const getAllnotecasts = query({
 });
 
 // this query will get the notecast by the notecastId.
-export const getnotecastById = query({
+export const getNotecastById = query({
   args: {
     notecastId: v.id("notecasts"),
   },
@@ -110,7 +110,7 @@ export const getTrendingNotecasts = query({
 });
 
 // this query will get the notecast by the authorId.
-export const getnotecastByAuthorId = query({
+export const getNotecastByAuthorId = query({
   args: {
     authorId: v.string(),
   },
